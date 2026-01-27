@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import DetailPage from './pages/DetailPage';
 import AddPage from './pages/AddPage';
+import ArchivedPage from './pages/ArchivedPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <main>
           <Routes>
             <Route path='/' element={<HomePage />} />
+            <Route path='/archives' element={<ArchivedPage />} />
             <Route path='/notes/new' element={<AddPage />} />
             <Route path='/notes/:id' element={<DetailPage />} />
           </Routes>

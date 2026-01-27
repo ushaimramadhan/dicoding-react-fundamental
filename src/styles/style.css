@@ -220,3 +220,22 @@ header h1 a:hover {
 .action:hover {
   background-color: #333;
 }
+
+.note-item__archive-button {
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  border-top: 1px solid var(--border-color); /* Garis pemisah atas */
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #f5b041; /* Kuning/Emas */
+  padding: 12px 0;
+  transition: background-color 0.2s;
+}
+
+.note-item__archive-button:hover {
+  background-color: #333;
+}
