@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import DetailPage from './pages/DetailPage';
+import AddPage from './pages/AddPage';
 
 const DetailPage = () => <p>Halaman Detail-tes</p>
 const AddPage = () => <p>Halaman Tambah-tes</p>
@@ -11,6 +13,11 @@ function App() {
       <div className="app-container">
         <header>
           <h1><Link to='/'>Aplikasi Catatan</Link></h1>
+          <nav className='navigation'>
+            <ul>
+              <li><Link to='/archives'>Arsip</Link></li>
+            </ul>
+          </nav>
         </header>
         <main>
           <Routes>
