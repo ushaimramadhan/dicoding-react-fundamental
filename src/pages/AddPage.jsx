@@ -37,7 +37,7 @@ function AddPage() {
             className="add-new-page__input__body"
             placeholder="Tuliskan catatanmu di sini..."
             value={body}
-            onChange={onTitleChangeEventHandler}
+            onChange={onBodyChangeEventHandler}
             required
           ></textarea>
         </div>
