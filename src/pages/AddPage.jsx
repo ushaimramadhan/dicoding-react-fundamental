@@ -39,7 +39,7 @@ function AddPage() {
             value={body}
             onChange={onTitleChangeEventHandler}
             required
-          />
+          ></textarea>
         </div>
         <div className="add-new-page__action">
           <button className="action" type="submit" title="Simpan">Simpan</button>

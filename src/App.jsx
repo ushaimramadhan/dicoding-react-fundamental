@@ -4,9 +4,6 @@ import HomePage from './pages/HomePage';
 import DetailPage from './pages/DetailPage';
 import AddPage from './pages/AddPage';
 
-const DetailPage = () => <p>Halaman Detail-tes</p>
-const AddPage = () => <p>Halaman Tambah-tes</p>
-
 function App() {
   return (
     <BrowserRouter>
