@@ -2,6 +2,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getArchivedNotes, deleteNote, unarchiveNote } from '../utils/local-data';
 import NoteItem from '../components/NoteItem';
+import SearchBar from '../components/SearchBar'; // Import SearchBar
 
 function ArchivedPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,8 +15,12 @@ function ArchivedPage() {
   }
 
   function onUnarchiveHandler(id) {
-    unarchiveNote(id); // Kembalikan ke catatan aktif
-    setNotes(getArchivedNotes()); // Update state
+    unarchiveNote(id);
+    setNotes(getArchivedNotes());
+  }
+
+  function onKeywordChangeHandler(keyword) {
+    setSearchParams({ keyword });
   }
 
   const filteredNotes = notes.filter((note) => {
@@ -25,6 +30,10 @@ function ArchivedPage() {
   return (
     <section className="archives-page">
       <h2>Catatan Arsip</h2>
+      
+      {/* Pasang SearchBar juga di sini */}
+      <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
+
       {filteredNotes.length > 0 ? (
         <div className="notes-list">
           {filteredNotes.map((note) => (
@@ -32,7 +41,7 @@ function ArchivedPage() {
               key={note.id} 
               {...note} 
               onDelete={onDeleteHandler}
-              onArchive={onUnarchiveHandler} // Di sini fungsinya unarchive
+              onArchive={onUnarchiveHandler}
             />
           ))}
         </div>

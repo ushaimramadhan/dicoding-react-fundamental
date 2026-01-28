@@ -239,3 +239,29 @@ header h1 a:hover {
 .note-item__archive-button:hover {
   background-color: #333;
 }
+
+/* --- Search Bar --- */
+.search-bar {
+  margin: 16px 0;
+}
+
+.search-bar input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+.search-bar input::placeholder {
+  color: #aaa;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
