@@ -1,32 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { getActiveNotes, deleteNote, archiveNote } from '../utils/local-data';
+import { getActiveNotes, deleteNote, archiveNote } from '../utils/network-data';
 import NoteItem from '../components/NoteItem';
-import SearchBar from '../components/SearchBar'; // Import SearchBar
+import SearchBar from '../components/SearchBar';
 
 function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [notes, setNotes] = React.useState(getActiveNotes());
+  const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
   
-  // Ambil keyword dari URL. Jika kosong, defaultnya string kosong.
   const keyword = searchParams.get('keyword') || '';
 
-  function onDeleteHandler(id) {
-    deleteNote(id);
-    setNotes(getActiveNotes());
+  useEffect(() => {
+    async function fetchNotes() {
+      const { data } = await getActiveNotes();
+      if (data) {
+        setNotes(data);
+      }
+      setLoading(false); 
+    }
+
+    fetchNotes();
+  }, []); 
+
+  async function onDeleteHandler(id) {
+    await deleteNote(id);
+    const { data } = await getActiveNotes();
+    setNotes(data);
   }
 
-  function onArchiveHandler(id) {
-    archiveNote(id);
-    setNotes(getActiveNotes());
+  async function onArchiveHandler(id) {
+    await archiveNote(id);
+    const { data } = await getActiveNotes();
+    setNotes(data);
   }
 
-  // Fungsi ini akan mengubah URL saat diketik
   function onKeywordChangeHandler(keyword) {
     setSearchParams({ keyword });
   }
 
-  // Filter notes berdasarkan keyword
   const filteredNotes = notes.filter((note) => {
     return note.title.toLowerCase().includes(keyword.toLowerCase());
   });
@@ -35,22 +47,27 @@ function HomePage() {
     <section className="homepage">
       <h2>Catatan Aktif</h2>
       
-      {/* Pasang SearchBar di sini */}
       <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
 
-      {filteredNotes.length > 0 ? (
-        <div className="notes-list">
-          {filteredNotes.map((note) => (
-            <NoteItem 
-              key={note.id} 
-              {...note} 
-              onDelete={onDeleteHandler}
-              onArchive={onArchiveHandler}
-            />
-          ))}
-        </div>
+      {loading ? (
+        <p className="notes-list__empty-message">Memuat data...</p>
       ) : (
-        <p className="notes-list__empty-message">Tidak ada catatan</p>
+        <>
+          {filteredNotes.length > 0 ? (
+            <div className="notes-list">
+              {filteredNotes.map((note) => (
+                <NoteItem 
+                  key={note.id} 
+                  {...note} 
+                  onDelete={onDeleteHandler}
+                  onArchive={onArchiveHandler}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="notes-list__empty-message">Tidak ada catatan</p>
+          )}
+        </>
       )}
       
       <div className="homepage__action">
