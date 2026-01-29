@@ -1,10 +1,22 @@
 :root {
+  /* --- Tema Default (Light Mode) --- */
   --font-body: 'Inter', sans-serif;
+  --bg-color: #ffffff;
+  --text-color: #202124;
+  --card-bg: #ffffff;
+  --border-color: #dadce0;
+  --accent-color: #6200ee; /* Ungu standard material design */
+  --input-bg: #f1f3f4;
+}
+
+/* --- Tema Gelap (Dark Mode - Sesuai Kode Asli Anda) --- */
+[data-theme='dark'] {
   --bg-color: #202124;
   --text-color: #e8eaed;
   --card-bg: transparent;
   --border-color: #5f6368;
   --accent-color: #bb86fc;
+  --input-bg: transparent;
 }
 
 * {
@@ -18,6 +30,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   padding: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Efek transisi halus */
 }
 
 a {
@@ -48,15 +61,111 @@ header h1 a:hover {
   text-decoration: underline;
 }
 
+/* --- Navigation (Update untuk Button Logout & Theme) --- */
 .navigation ul {
   display: flex;
   list-style: none;
+  align-items: center; /* Agar ikon dan teks sejajar vertikal */
   gap: 16px;
 }
 
 .navigation a {
   font-size: 18px;
-  color: var(--accent-color); /* Warna link arsip */
+  color: var(--accent-color);
+}
+
+.navigation a:hover {
+  text-decoration: underline;
+}
+
+/* Tombol Navigasi (Logout & Tema) yang berupa <button> */
+.button-logout, .toggle-theme {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 18px;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-logout:hover, .toggle-theme:hover {
+  color: var(--accent-color);
+}
+
+/* --- Halaman Login & Register (BARU) --- */
+.login-page, .register-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 64px;
+}
+
+.login-page h2, .register-page h2 {
+  margin-bottom: 24px;
+  font-weight: normal;
+}
+
+.input-login, .input-register {
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid var(--border-color);
+  padding: 32px;
+  border-radius: 8px;
+}
+
+.input-login label, .input-register label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.input-login input, .input-register input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+.input-login input:focus, .input-register input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.input-login button, .input-register button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--accent-color);
+  color: #fff; /* Teks tombol selalu putih agar kontras dengan ungu */
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.input-login button:hover, .input-register button:hover {
+  opacity: 0.9;
+}
+
+.login-page p, .register-page p {
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.login-page p a, .register-page p a {
+  color: var(--accent-color);
+  font-weight: bold;
 }
 
 /* --- Daftar Catatan (Grid) --- */
@@ -80,11 +189,12 @@ header h1 a:hover {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: var(--card-bg);
 }
 
 .note-item__content {
   padding: 16px;
-  flex: 1; /* Agar tinggi kartu seragam */
+  flex: 1;
 }
 
 .note-item__title {
@@ -125,13 +235,31 @@ header h1 a:hover {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  color: #ff5f52; /* Merah untuk delete */
+  color: #ff5f52;
   padding: 12px 0;
   transition: background-color 0.2s;
 }
 
 .note-item__delete-button:hover {
-  background-color: #333;
+  background-color: rgba(255, 95, 82, 0.1); /* Hover halus */
+}
+
+.note-item__archive-button {
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #f5b041;
+  padding: 12px 0;
+  transition: background-color 0.2s;
+}
+
+.note-item__archive-button:hover {
+  background-color: rgba(245, 176, 65, 0.1); /* Hover halus */
 }
 
 /* --- Halaman Detail --- */
@@ -199,7 +327,7 @@ header h1 a:hover {
   color: #aaa;
 }
 
-/* Tombol Umum (Simpan, dll) */
+/* Tombol Umum (Simpan, Hapus di Detail) */
 .action {
   background-color: transparent;
   color: var(--text-color);
@@ -208,36 +336,17 @@ header h1 a:hover {
   border-radius: 4px;
   cursor: pointer;
   font-size: 24px;
-  display: block; /* Agar bisa diatur margin */
+  display: block;
 }
 
 .add-new-page__action {
   margin-top: 16px;
   display: flex;
-  justify-content: flex-end; /* Tombol simpan di kanan */
+  justify-content: flex-end;
 }
 
 .action:hover {
-  background-color: #333;
-}
-
-.note-item__archive-button {
-  display: block;
-  width: 100%;
-  background-color: transparent;
-  border: 0;
-  border-top: 1px solid var(--border-color); /* Garis pemisah atas */
-  font-family: inherit;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #f5b041; /* Kuning/Emas */
-  padding: 12px 0;
-  transition: background-color 0.2s;
-}
-
-.note-item__archive-button:hover {
-  background-color: #333;
+  background-color: var(--border-color); /* Ubah background saat hover */
 }
 
 /* --- Search Bar --- */
