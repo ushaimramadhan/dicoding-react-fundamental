@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getNote, deleteNote } from "../utils/local-data";
+import { getNote, deleteNote } from "../utils/network-data";
 import { showFormattedDate } from "../utils";
 
 function DetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const note = getNote(id);
+  
+  const [note, setNote] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchNote() {
+      const { data } = await getNote(id);
+      setNote(data);
+      setLoading(false);
+    }
+    fetchNote();
+  }, [id]);
+
+  async function onDeleteHandler() {
+    await deleteNote(id);
+    navigate('/');
+  }
+
+  if (loading) {
+    return <section><p>Memuat catatan...</p></section>;
+  }
 
   if (!note) {
     return <section><p>Catatan tidak ditemukan.</p></section>;
-  }
-
-  function onDeleteHandler() {
-    deleteNote(id);
-    navigate('/');
   }
 
   return (
@@ -24,10 +39,17 @@ function DetailPage() {
       <div className="detail-page__body">{note.body}</div>
 
       <div className="detail-page__action">
-        <button className="action" type="button" title="Hapus" onClick={onDeleteHandler}>Hapus</button>
+        <button 
+            className="action" 
+            type="button" 
+            title="Hapus" 
+            onClick={onDeleteHandler}
+        >
+            Hapus
+        </button>
       </div>
     </section>
-  )
+  );
 }
 
 export default DetailPage;

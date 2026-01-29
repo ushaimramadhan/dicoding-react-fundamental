@@ -1,22 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getArchivedNotes, deleteNote, unarchiveNote } from '../utils/local-data';
+import { getArchivedNotes, deleteNote, unarchiveNote } from '../utils/network-data';
 import NoteItem from '../components/NoteItem';
-import SearchBar from '../components/SearchBar'; // Import SearchBar
+import SearchBar from '../components/SearchBar';
 
 function ArchivedPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [notes, setNotes] = React.useState(getArchivedNotes());
+  const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
   const keyword = searchParams.get('keyword') || '';
 
-  function onDeleteHandler(id) {
-    deleteNote(id);
-    setNotes(getArchivedNotes());
+  useEffect(() => {
+    async function fetchArchivedNotes() {
+      const { data } = await getArchivedNotes();
+      if (data) {
+        setNotes(data);
+      }
+      setLoading(false);
+    }
+
+    fetchArchivedNotes();
+  }, []);
+
+  async function onDeleteHandler(id) {
+    await deleteNote(id);
+    const { data } = await getArchivedNotes();
+    setNotes(data);
   }
 
-  function onUnarchiveHandler(id) {
-    unarchiveNote(id);
-    setNotes(getArchivedNotes());
+  async function onUnarchiveHandler(id) {
+    await unarchiveNote(id);
+    const { data } = await getArchivedNotes();
+    setNotes(data);
   }
 
   function onKeywordChangeHandler(keyword) {
@@ -31,22 +47,27 @@ function ArchivedPage() {
     <section className="archives-page">
       <h2>Catatan Arsip</h2>
       
-      {/* Pasang SearchBar juga di sini */}
       <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
 
-      {filteredNotes.length > 0 ? (
-        <div className="notes-list">
-          {filteredNotes.map((note) => (
-            <NoteItem 
-              key={note.id} 
-              {...note} 
-              onDelete={onDeleteHandler}
-              onArchive={onUnarchiveHandler}
-            />
-          ))}
-        </div>
+      {loading ? (
+        <p className="notes-list__empty-message">Memuat arsip...</p>
       ) : (
-        <p className="notes-list__empty-message">Arsip kosong</p>
+        <>
+          {filteredNotes.length > 0 ? (
+            <div className="notes-list">
+              {filteredNotes.map((note) => (
+                <NoteItem 
+                  key={note.id} 
+                  {...note} 
+                  onDelete={onDeleteHandler}
+                  onArchive={onUnarchiveHandler}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="notes-list__empty-message">Arsip kosong</p>
+          )}
+        </>
       )}
     </section>
   );
