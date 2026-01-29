@@ -37,7 +37,7 @@ function LoginPage({ loginSuccess }) {
   );
 }
 
-LoginPage.prototype = {
+LoginPage.PropTypes = {
   loginSuccess: PropTypes.func.isRequired,
 }
 
