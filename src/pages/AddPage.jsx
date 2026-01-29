@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addNote } from '../utils/local-data';
+import { addNote } from '../utils/network-data';
 
 function AddPage() {
   const navigate = useNavigate();
@@ -16,16 +16,19 @@ function AddPage() {
     setBody(event.target.value);
   }
 
-  function onSubmitEventHandler(event) {
-    event.preventDefault(); // Mencegah reload browser
-    addNote({ title, body }); // Simpan data
-    navigate('/'); // Kembali ke Home
+  async function onSubmitEventHandler(event) {
+    event.preventDefault();
+    
+    const { error } = await addNote({ title, body });
+    
+    if (!error) {
+        navigate('/'); 
+    }
   }
 
   return (
     <section className="add-new-page">
       <h2>Tambah Catatan</h2>
-      {/* PERHATIKAN: Tag form membungkus input DAN tombol */}
       <form onSubmit={onSubmitEventHandler}>
         <div className="add-new-page__input">
           <input
@@ -44,7 +47,6 @@ function AddPage() {
           ></textarea>
         </div>
         
-        {/* Tombol HARUS ada di dalam scope <form> agar type="submit" bekerja */}
         <div className="add-new-page__action">
           <button className="action" type="submit">Simpan</button>
         </div>
