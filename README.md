@@ -2,7 +2,7 @@
 
 Submission proyek akhir untuk kursus **Belajar Fundamental Aplikasi Web dengan React** di [Dicoding Academy](https://www.dicoding.com/). Proyek ini merupakan evolusi dari aplikasi catatan sebelumnya, kini terintegrasi dengan REST API dan memiliki fitur manajemen state yang lebih advance.
 
-## Fitur Unggulan (Kriteria Proyek)
+## Fitur Unggulan
 Aplikasi ini memenuhi seluruh kriteria fundamental, meliputi:
 * **Integrasi REST API**: Semua data catatan dan autentikasi dikelola melalui API yang disediakan Dicoding.
 * **Autentikasi Pengguna**: Fitur Login dan Register untuk keamanan data pengguna.
